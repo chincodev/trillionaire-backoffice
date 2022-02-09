@@ -85,8 +85,6 @@ function AttributeForm(props) {
             <Form className="signup-form">
                 <div className='col-12 mt-3'>
                     <div className="form-group">
-                    {console.log(errors)}
-                        {console.log(errors.trait_type)}
 						<SingleSelect
 							value={values.trait_type}
 							onChange={setFieldValue}
