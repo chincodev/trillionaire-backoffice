@@ -69,7 +69,7 @@ function AttributeForm(props) {
         if(!_.isEmpty(sanitizedField.trait_type)){
             sanitizedField.trait_type = sanitizedField.trait_type._id
         }
-        if(sanitizedField.forbidden_trait_types.length > 0){
+        if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
             sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
         }
         setStatus();
