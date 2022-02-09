@@ -51,16 +51,18 @@ function AttributeForm(props) {
         // }
         ).required('Trait type is required'),
         forbidden_trait_types: Yup.array().of(
-            Yup.object({
-                name: Yup.string()
-                    .required('name is required')
-                    .max(100, 'The name cannot contain more than 100 characters'),
-                description: Yup.string()
-                    .max(455, 'The description cannot contain more than 455 characters'),
-                index: Yup.number()
-                    .max(100, 'Value must be less or equal than 100')
-                    .min(0, 'Value must be equal or greater than 0'),
-            }),
+            Yup.object(
+            //     {
+            //     name: Yup.string()
+            //         .required('name is required')
+            //         .max(100, 'The name cannot contain more than 100 characters'),
+            //     description: Yup.string()
+            //         .max(455, 'The description cannot contain more than 455 characters'),
+            //     index: Yup.number()
+            //         .max(100, 'Value must be less or equal than 100')
+            //         .min(0, 'Value must be equal or greater than 0'),
+            // }
+            ),
         )
     });
 
