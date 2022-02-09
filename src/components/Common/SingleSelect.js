@@ -67,7 +67,7 @@ class SingleSelect extends React.Component {
 			{this.props.smallMessage && (
 			        <div style={{ marginTop: '.5rem' }}>{this.props.smallMessage}</div>
 		        )}
-		  {!!this.props.error && this.props.error.toLowerCase().includes(this.props.name.toLowerCase())  && (
+		  {!!this.props.error && this.props.error.toLowerCase() && this.props.error.toLowerCase().includes(this.props.name.toLowerCase())  && (
 			        <div style={{ color: 'red', marginTop: '.5rem' }}>{this.props.error}</div>
 		        )}
 		    </div>
