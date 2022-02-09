@@ -38,16 +38,18 @@ function AttributeForm(props) {
         chance: Yup.number()
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
-        trait_type: Yup.object({
-            name: Yup.string()
-                .required('name is required')
-                .max(100, 'The name cannot contain more than 100 characters'),
-            description: Yup.string()
-                .max(455, 'The description cannot contain more than 455 characters'),
-            index: Yup.number()
-                .max(100, 'Value must be less or equal than 100')
-                .min(0, 'Value must be equal or greater than 0'),
-        }),
+        trait_type: Yup.object(
+        //     {
+        //     name: Yup.string()
+        //         .required('name is required')
+        //         .max(100, 'The name cannot contain more than 100 characters'),
+        //     description: Yup.string()
+        //         .max(455, 'The description cannot contain more than 455 characters'),
+        //     index: Yup.number()
+        //         .max(100, 'Value must be less or equal than 100')
+        //         .min(0, 'Value must be equal or greater than 0'),
+        // }
+        ).required('Trait type is required'),
         forbidden_trait_types: Yup.array().of(
             Yup.object({
                 name: Yup.string()
@@ -83,6 +85,8 @@ function AttributeForm(props) {
             <Form className="signup-form">
                 <div className='col-12 mt-3'>
                     <div className="form-group">
+                    {console.log(errors)}
+                        {console.log(errors.trait_type)}
 						<SingleSelect
 							value={values.trait_type}
 							onChange={setFieldValue}

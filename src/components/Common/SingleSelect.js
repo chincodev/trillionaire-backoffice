@@ -63,6 +63,7 @@ class SingleSelect extends React.Component {
 		    	placeholder={this.props.placeholder}
 		    	onChange={this.handleChange}
 		    />
+			{console.log(this.props)}
 			{this.props.smallMessage && (
 			        <div style={{ marginTop: '.5rem' }}>{this.props.smallMessage}</div>
 		        )}
