@@ -48,7 +48,6 @@ class SingleSelect extends React.Component {
 		const { defaultOptions, placeholder,  } = this.props;
 		return (
 			<div >
-				{console.log(this.props)}
 			
 			{this.props.title?<label htmlFor="color">{this.props.title}</label>:""}
 		    <AsyncSelect
@@ -63,7 +62,6 @@ class SingleSelect extends React.Component {
 		    	placeholder={this.props.placeholder}
 		    	onChange={this.handleChange}
 		    />
-			{console.log(this.props)}
 			{this.props.smallMessage && (
 			        <div style={{ marginTop: '.5rem' }}>{this.props.smallMessage}</div>
 		        )}

@@ -26,10 +26,28 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { withTranslation } from "react-i18next"
 import _ from 'lodash';
 import moment from 'moment';
-import { productService, refreshService } from 'services';
+import { avatarService, productService, refreshService } from 'services';
 
 
 const Dashboard = props => {
+
+    const [ avatar, setAvatar ] = useState(null)
+    const [ actionsLoading, setActionsLoading ] = useState(null)
+
+    const generate = async () => {
+
+        try {
+            setActionsLoading(true)
+            let response = await avatarService.find('1000')
+            setAvatar(response);
+            setActionsLoading(false)
+        } catch (er) {
+
+            console.log(er);
+
+        }
+
+    }
 
     return (
         <React.Fragment>
@@ -47,10 +65,14 @@ const Dashboard = props => {
                             <CardBody>
                                 <div className='d-flex align-items-between w-100'>
                                     <div>
-                                        <CardTitle className="h4">Rate History</CardTitle>
+                                        <CardTitle className="h4">Trillionaire club</CardTitle>
                                    
                                     </div>
                                     
+                                </div>
+                                <div className='d-flex justify-content-center flex-column align-items-center'>
+                                    <img style={{width:'300px'}} src={avatar ? avatar.url : ''}></img>
+                                    <button onClick={()=>generate()} disabled={actionsLoading} className='btn btn-primary'>{actionsLoading ? 'Please wait...' : 'Generate NFT'}</button>
                                 </div>
                             </CardBody>
                         </Card> 
