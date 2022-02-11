@@ -10,6 +10,7 @@ import currenciesSaga from "./currencies/saga"
 import colorsSaga from "./colors/saga"
 import trait_typesSaga from "./trait_types/saga"
 import attributesSaga from "./attributes/saga"
+import hair_coolorsSaga from "./hair_coolors/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     fork(colorsSaga),
     fork(trait_typesSaga),
     fork(attributesSaga),
+    fork(hair_coolorsSaga),
   ])
 }

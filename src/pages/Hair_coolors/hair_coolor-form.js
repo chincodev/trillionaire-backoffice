@@ -7,7 +7,7 @@ import { currencyService } from 'services';
 
 
 
-function ColorForm(props) {
+function Hair_coolorForm(props) {
 
     const [initialValues, setInitialValues] = React.useState({
 		value: '',
@@ -16,8 +16,8 @@ function ColorForm(props) {
     });
 
     React.useEffect(() => {
-        setInitialValues(props.colorToEdit)
-    }, [props.colorToEdit])
+        setInitialValues(props.hair_coolorToEdit)
+    }, [props.hair_coolorToEdit])
 
     
 
@@ -36,7 +36,7 @@ function ColorForm(props) {
     function onSubmit(fields, { setStatus, setSubmitting }) {
         setStatus();
         console.log(fields);
-        props.handleValidColorSubmit(null, fields)
+        props.handleValidHair_coolorSubmit(null, fields)
     }
 
     return (
@@ -118,7 +118,7 @@ function ColorForm(props) {
                     <button type="submit" disabled={props.actionsLoading} className="btn btn-primary">
                         {props.actionsLoading && <span className="spinner-border spinner-border-sm mr-1"></span>}
                         {
-                            props.isEdit ? 'UPDATE COLOR' : 'ADD COLOR'
+                            props.isEdit ? 'UPDATE HAIR_COOLOR' : 'ADD HAIR_COOLOR'
                         }
                     </button>
                 </div>
@@ -133,4 +133,4 @@ function ColorForm(props) {
 }
 
 
-export default ColorForm
+export default Hair_coolorForm

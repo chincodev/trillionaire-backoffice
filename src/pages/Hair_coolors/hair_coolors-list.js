@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import MetaTags from 'react-meta-tags';
 import { connect } from "react-redux"
-import { withRouter, Link, useHistory } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom"
 import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalBody, Alert } from "reactstrap"
 import
 paginationFactory, {
@@ -17,21 +17,21 @@ import showNotification from '../../components/Common/Notifications'
 import Breadcrumbs from "components/Common/Breadcrumb"
 
 import {
-    getAttributes,
-    addNewAttribute,
-    updateAttribute,
-    deleteAttribute
-} from "store/attributes/actions"
+    getHair_coolors,
+    addNewHair_coolor,
+    updateHair_coolor,
+    deleteHair_coolor
+} from "store/hair_coolors/actions"
 import _, { isEmpty, size, map } from "lodash"
 import DeleteDialog from '../../components/Common/DeleteDialog'
-import ModalAttributeForm from "./modal-attribute-form";
-import { attributeService, trait_typeService } from "services";
-import ModalAttributeImages from "./modal-attribute-images";
+import ModalHair_coolorForm from "./modal-hair_coolor-form";
+import { hair_coolorService } from "services";
 
-const AttributesList = props => {
+const Hair_coolorsList = props => {
+    console.log(props)
 
-    const { attributes, onGetAttributes } = props
-    const [attributeToEdit, setAttributeToEdit] = useState([])
+    const { hair_coolors, onGetHair_coolors } = props
+    const [hair_coolorToEdit, setHair_coolorToEdit] = useState([])
     const [modal, setModal] = useState(false);
     const [showError, setShowError] = useState(false);
     const [isEdit, setIsEdit] = useState(false)
@@ -55,16 +55,15 @@ const AttributesList = props => {
         order: 'desc' // desc or asc
     }];
 
-    const history = useHistory()
 
-    const attributeListColumns = [
+    const hair_coolorListColumns = [
         {
             text: "id",
             dataField: "_id",
             hidden: true,
-            formatter: (cellContent, attribute) => (
+            formatter: (cellContent, hair_coolor) => (
                 <>
-                    {attribute.id}
+                    {hair_coolor.id}
                 </>
             ),
         },
@@ -79,62 +78,27 @@ const AttributesList = props => {
         {
             dataField: "chance",
             text: "Chance",
-            formatter: (cellContent, value) => (
-                <>
-                    {cellContent} / 9999
-                </>
-            ),
-        },
-        {
-            text: "Trait type",
-            dataField: "trait_type",
-            formatter: (cellContent, value) => (
-                <>
-                    {cellContent.name}
-                </>
-            ),
-        },
-        {
-            text: "Forbidden trait types",
-            dataField: "forbidden_trait_types",
-            formatter: (cellContent, value) => (
-                <>
-                    {cellContent && cellContent.length > 0 && cellContent.map(x => x.name).join(', ')}
-                </>
-            ),
-        },
-        {
-            text: "Images",
-            dataField: "images",
-            formatter: (cellContent, value) => (
-                <>
-                    {cellContent ? cellContent.length : 0}
-                </>
-            ),
         },
         {
             dataField: "menu",
             isDummyField: true,
             editable: false,
             text: "Action",
-            formatter: (cellContent, attribute) => (
+            formatter: (cellContent, hair_coolor) => (
                 <div className="d-flex gap-3">
-                    <Link className="text-primary" to="#"><i className="mdi mdi-eye font-size-18" id="imagetooltip" onClick={() => openImagesModal(attribute)}></i></Link>
-                    <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => handleAttributeClick(attribute)}></i></Link>
-                    <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => openDeleteDialog(attribute)}></i></Link>
+                    <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => handleHair_coolorClick(hair_coolor)}></i></Link>
+                    <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => openDeleteDialog(hair_coolor)}></i></Link>
                 </div>
             ),
         },
     ]
 
     useEffect(() => {
-        
-            onGetAttributes(`?filter_field[]=trait_type&filter_type[]=eq&filter_value[]=${props.match.params._id}`)
+        if (hair_coolors && !hair_coolors.length) {
+            onGetHair_coolors(window.location.search);
             setIsEdit(false)
-        
-    }, [props.match.params._id]);
-
-    
+        }
+    }, [onGetHair_coolors, hair_coolors.from, window.location.search]);
 
 
 
@@ -142,17 +106,14 @@ const AttributesList = props => {
         setModal(!modal)
     }
 
-    const handleAttributeClick = arg => {
+    const handleHair_coolorClick = arg => {
         setShowError(false)
-        const attribute = arg
-        setAttributeToEdit({
-            _id: attribute._id,
-            value: attribute.value,
-            description: attribute.description,
-            // image: attribute.image,
-            chance: attribute.chance,
-            trait_type: attribute.trait_type, 
-            forbidden_trait_types: attribute.forbidden_trait_types
+        const hair_coolor = arg
+        setHair_coolorToEdit({
+            _id: hair_coolor._id,
+            value: hair_coolor.value,
+            description: hair_coolor.description,
+            chance: hair_coolor.chance
         })
 
         setIsEdit(true)
@@ -160,59 +121,41 @@ const AttributesList = props => {
         setModal(true)
     }
 
-    const openDeleteDialog = (attribute) => {
+    const openDeleteDialog = (hair_coolor) => {
         toggleDeleteModal()
         setScopedItem({
-            _id: attribute._id,
-            name: attribute.value
+            _id: hair_coolor._id,
+            name: hair_coolor.value
         })
     }
 
-    const [ imagesModalIsOpen, setImagesModalIsOpen ] = useState(false)
-    const [ scopedItemForImages, setScopedItemForImages ] = useState({})
-
-    function toggleImagesModal() {
-        setImagesModalIsOpen(!imagesModalIsOpen)
-        removeBodyCss()
-    }
-
-    const openImagesModal = (attribute) => {
-        toggleImagesModal()
-        setScopedItemForImages(attribute)
-    }
-
-    const handleDeleteAttribute = () => {
+    const handleDeleteHair_coolor = () => {
         setActionsLoading(true)
-        const { onDeleteAttribute } = props
-        onDeleteAttribute(scopedItem)
+        const { onDeleteHair_coolor } = props
+        onDeleteHair_coolor(scopedItem)
     }
 
 
-    const handleValidAttributeSubmit = (e, values) => {
+    const handleValidHair_coolorSubmit = (e, values) => {
         setActionsLoading(true)
         setShowError(true)
-        const { onAddNewAttribute, onUpdateAttribute } = props
+        const { onAddNewHair_coolor, onUpdateHair_coolor } = props
         if (isEdit) {
-            const updateAttribute = {
+            console.log(values);
+            const updateHair_coolor = {
                 _id: values._id,
                 value: values.value,
                 description: values.description,
-                // image: values.image,
-                chance: values.chance,
-                trait_type: values.trait_type, 
-                forbidden_trait_types: values.forbidden_trait_types
+                chance: values.chance
             }
-            onUpdateAttribute(updateAttribute)
+            onUpdateHair_coolor(updateHair_coolor)
         } else {
-            const newAttribute = {
-                value: values.value,
-                description: values.description,
-                // image: values.image,
-                chance: values.chance,
-                trait_type: values.trait_type, 
-                forbidden_trait_types: values.forbidden_trait_types
+            const newHair_coolor = {
+                value: values["value"],
+                description: values["description"],
+                chance: values["chance"]
             }
-            onAddNewAttribute(newAttribute)
+            onAddNewHair_coolor(newHair_coolor)
         }
     }
 
@@ -221,7 +164,7 @@ const AttributesList = props => {
             if(_.isEmpty(props.error)){
                 setOpenFormModal(false)
                 setIsEdit(false)
-                setAttributeToEdit({})
+                setHair_coolorToEdit({})
                 showNotification({title:'Saved!', message:'Item is saved', type:'success'})
             }
         }
@@ -232,12 +175,12 @@ const AttributesList = props => {
             }
         }
         setActionsLoading(false)
-    }, [attributes, props.error])
+    }, [hair_coolors, props.error])
 
-    const handleAttributeClicks = () => {
+    const handleHair_coolorClicks = () => {
         setOpenFormModal(true)
         setIsEdit(false)
-        setAttributeToEdit({})
+        setHair_coolorToEdit({})
         setShowError(false)
     }
 
@@ -250,8 +193,6 @@ const AttributesList = props => {
         document.body.classList.add("no_padding")
     }
 
-
-
     return (
         <React.Fragment>
             <DeleteDialog 
@@ -259,38 +200,28 @@ const AttributesList = props => {
                 setDeleteModalIsOpen={setDeleteModalIsOpen}
                 toggleDeleteModal={toggleDeleteModal}
                 scopedItem={scopedItem}
-                handleDelete={handleDeleteAttribute}
+                handleDelete={handleDeleteHair_coolor}
                 actionsLoading={actionsLoading}
             />
-            <ModalAttributeForm 
+            <ModalHair_coolorForm 
                 isOpen={openFormModal}
                 isEdit={false}
                 toggle={()=>setOpenFormModal(false)}
-                handleValidAttributeSubmit={handleValidAttributeSubmit}
-                attributeToEdit={attributeToEdit}
+                handleValidHair_coolorSubmit={handleValidHair_coolorSubmit}
+                hair_coolorToEdit={hair_coolorToEdit}
                 isEdit={isEdit}
                 error={props.error}
                 showError={showError}
                 actionsLoading={actionsLoading}
                 setActionsLoading={setActionsLoading}
             />
-            
-            <ModalAttributeImages 
-                isOpen={imagesModalIsOpen}
-                toggle={()=>setImagesModalIsOpen(false)}
-                actionsLoading={actionsLoading}
-                setActionsLoading={setActionsLoading}
-                item={scopedItemForImages}
-            />
             <div className="page-content">
                 <MetaTags>
-                    <title>Trait types List | Skote - React Admin & Dashboard Template</title>
+                    <title>Hair_coolor List | Skote - React Admin & Dashboard Template</title>
                 </MetaTags>
                 <Container fluid>
                     {/* Render Breadcrumbs */}
-                    <Breadcrumbs title="Contacts" breadcrumbItem={JSON.parse(sessionStorage.getItem('menu')).find(x => x._id === props.match.params._id).name + ' list'} />
-                    <h5>{JSON.parse(sessionStorage.getItem('menu')).find(x => x._id === props.match.params._id).totalChance+'/9999'} spots taken</h5>
-                    <br/>
+                    <Breadcrumbs title="Contacts" breadcrumbItem="Hair_coolor List" />
                     <Row>
                         <Col lg="12">
                             <Card>
@@ -298,14 +229,14 @@ const AttributesList = props => {
                                     <PaginationProvider
                                       pagination={paginationFactory(pageOptions)}
                                       keyField='_id'
-                                      columns={+attributeListColumns}
-                                      data={attributes}
+                                      columns={+hair_coolorListColumns}
+                                      data={hair_coolors}
                                     >
                                         {({ paginationProps, paginationTableProps }) => (
                                             <ToolkitProvider
                                               keyField="_id"
-                                              data={attributes}
-                                              columns={attributeListColumns}
+                                              data={hair_coolors}
+                                              columns={hair_coolorListColumns}
                                               bootstrap4
                                               search
                                             >
@@ -313,19 +244,14 @@ const AttributesList = props => {
                                                     <React.Fragment>
                                                         <Row className="mb-2">
                                                             <Col sm="12">
-                                                                <div className="d-flex justify-content-between">
-                                                                    <div >
-                                                                       
-                                                                       
-                                                                        <strong><small>{props.totalSize} results found</small></strong>
-                                                                    </div>
+                                                                <div className="text-sm-end">
                                                                     <Button
                                                                         color="primary"
                                                                         className="font-16 btn-block btn btn-primary"
-                                                                        onClick={handleAttributeClicks}
+                                                                        onClick={handleHair_coolorClicks}
                                                                     >
                                                                         <i className="mdi mdi-plus-circle-outline me-1" />
-                                                                        Create Attribute
+                                                                        Create New Hair coolor
                                                                     </Button>
                                                                 </div>
                                                             </Col>
@@ -367,29 +293,29 @@ const AttributesList = props => {
     )
 }
 
-AttributesList.propTypes = {
-    attributes: PropTypes.array,
-    onGetAttributes: PropTypes.func,
-    onAddNewAttribute: PropTypes.func,
-    onDeleteAttribute: PropTypes.func,
-    onUpdateAttribute: PropTypes.func
+Hair_coolorsList.propTypes = {
+    hair_coolors: PropTypes.array,
+    onGetHair_coolors: PropTypes.func,
+    onAddNewHair_coolor: PropTypes.func,
+    onDeleteHair_coolor: PropTypes.func,
+    onUpdateHair_coolor: PropTypes.func
 }
 
-const mapStateToProps = ({ attributes }) => ({
-    attributes: attributes.attributes,
-    totalSize: attributes.totalSize,
-    from: attributes.from,
-    error: attributes.error
+const mapStateToProps = ({ hair_coolors }) => ({
+    hair_coolors: hair_coolors.hair_coolors,
+    totalSize: hair_coolors.totalSize,
+    from: hair_coolors.from,
+    error: hair_coolors.error
 })
 
 const mapDispatchToProps = dispatch => ({
-    onGetAttributes: (query) => dispatch(getAttributes(query)),
-    onAddNewAttribute: attribute => dispatch(addNewAttribute(attribute)),
-    onUpdateAttribute: attribute => dispatch(updateAttribute(attribute)),
-    onDeleteAttribute: attribute => dispatch(deleteAttribute(attribute)),
+    onGetHair_coolors: (query) => dispatch(getHair_coolors(query)),
+    onAddNewHair_coolor: hair_coolor => dispatch(addNewHair_coolor(hair_coolor)),
+    onUpdateHair_coolor: hair_coolor => dispatch(updateHair_coolor(hair_coolor)),
+    onDeleteHair_coolor: hair_coolor => dispatch(deleteHair_coolor(hair_coolor)),
 })
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(AttributesList))
+)(withRouter(Hair_coolorsList))

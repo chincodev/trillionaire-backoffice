@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 
 //i18n
 import { withTranslation } from "react-i18next"
+import { trait_typeService } from "services"
 
 const SidebarContent = props => {
   const ref = useRef()
@@ -18,13 +19,15 @@ const SidebarContent = props => {
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
     const pathName = props.location.pathname
-
+    console.log(pathName)
     const initMenu = () => {
       new MetisMenu("#side-menu")
       let matchingMenuItem = null
       const ul = document.getElementById("side-menu")
-      const items = ul.getElementsByTagName("a")
+      const items = ul.getElementsByClassName("link")
       for (let i = 0; i < items.length; ++i) {
+        console.log(pathName)
+        console.log(items[i].pathname)
         if (pathName === items[i].pathname) {
           matchingMenuItem = items[i]
           break
@@ -51,6 +54,7 @@ const SidebarContent = props => {
   }
 
   function activateParentDropdown(item) {
+    
     item.classList.add("active")
     const parent = item.parentElement
     const parent2El = parent.childNodes[1]
@@ -88,6 +92,17 @@ const SidebarContent = props => {
     return false
   }
 
+
+  const [ showMenu, setShowMenu ] = useState(true)
+
+  const rel = () => {
+    setShowMenu(false)
+    setTimeout(() => {
+      setShowMenu(true)
+    }, 100);
+  }
+  
+
   return (
     <React.Fragment>
       <SimpleBar style={{ maxHeight: "100%" }} ref={ref}>
@@ -95,35 +110,57 @@ const SidebarContent = props => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
-              <Link to="/dashboard" className=" ">
+              <Link to="/dashboard" className="link">
                 <i className="bx bx-home-circle"></i>
                 <span>Dashboard</span>
               </Link>
             </li>
-            
-            <li className="menu-title">{props.t("AVATARS FEATURES")}</li>
-
             <li>
-              <Link to="/attributes" className=" ">
-                <i className="bx bx-money"></i>
-                <span>Attributes</span>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/trait_types" className=" ">
+              <Link to="/trait_types" className="link">
                 <i className="bx bx-money"></i>
                 <span>Trait types</span>
               </Link>
             </li>
+            
+            <li className="menu-title">{props.t("MAIN ATTRIBUTES")}</li>
+
+            {/* <li>
+              <Link to="/attributes" className=" ">
+                <i className="bx bx-money"></i>
+                <span>Attributes</span>
+              </Link>
+            </li> */}
+            
 
             <li>
-              <Link to="/colors" className="">
+              <Link to="/colors" className="link">
                 <i className="bx bxs-package"></i>
-                <span>Base colors</span>
+                <span>Skin colors</span>
               </Link>
             </li>
-            
+            <li>
+              <Link to="/hair_coolors" className="link">
+                <i className="bx bxs-package"></i>
+                <span>Hair colors</span>
+              </Link>
+            </li>
+            <li className="menu-title">{props.t("NORMAL ATTRIBUTES")}</li>
+            {
+              showMenu && 
+                sessionStorage.getItem('menu') && JSON.parse(sessionStorage.getItem('menu')) && JSON.parse(sessionStorage.getItem('menu')).length > 0 && JSON.parse(sessionStorage.getItem('menu')).map(x => <li>
+                  <Link onClick={()=>rel()} to={`/attributes/${x._id}`} className="link">
+                    <i className="bx bxs-package"></i>
+                    <span style={{textTransform:'capitalize'}}>{x.name.toLowerCase()} {x.totalChance}/10k</span>
+                  </Link>
+                </li>)
+              
+            }
+            {/* <li style={{padding:'12px 20px'}} className="d-flex justify-content-center">
+           
+           <button className="btn btn-primary btn-block w-100"> ADD ATTRIBUTE</button>
+        
+         </li> */}
+         
             {/* <li className="menu-title">System</li>
             <li>
               <Link to="/users" className="">

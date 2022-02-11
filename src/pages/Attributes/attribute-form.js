@@ -35,7 +35,7 @@ function AttributeForm(props) {
         // image: Yup.mixed()
         //     .test('fileSize', "File Size is too large", value => value && value.size <= FILE_SIZE)
         //     .test('fileType', "Unsupported File Format", value => value && SUPPORTED_FORMATS.includes(value.type)),
-        chance: Yup.number()
+        chance: Yup.number().required('chance is required')
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
         trait_type: Yup.object(

@@ -44,7 +44,8 @@ function* onUpdateColor({ payload: color }) {
                 ...color, 
                 _id:color._id, 
                 value: color.value, 
-                description: color.description
+                description: color.description,
+                chance: color.chance
             }
         })
         yield put(updateColorSuccess(color))
@@ -68,7 +69,8 @@ function* onAddNewColor({ payload: color }) {
         const response = yield call(colorService.create, {
           ...color, 
           value: color.value,
-          description: color.description
+          description: color.description,
+          chance: color.chance
         })
         yield put(addColorSuccess(Object.assign({}, color, response)))
         yield put(addColorFail(null))

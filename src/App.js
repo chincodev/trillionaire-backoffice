@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
@@ -17,6 +17,7 @@ import NonAuthLayout from "./components/NonAuthLayout"
 
 // Import scss
 import "./assets/scss/theme.scss"
+import { trait_typeService } from 'services'
 
 // Import Firebase Configuration file
 
@@ -50,6 +51,21 @@ const App = props => {
     }
     return layoutCls
   }
+
+  const [ submenu, setSubmenu ] = useState([])
+
+  const getMenu = async () => {
+    try {
+      let response = await trait_typeService.list()
+      sessionStorage.setItem('menu', JSON.stringify(response.totalData))
+    } catch (er) {
+
+    }
+  }
+
+  useEffect(() => {
+    getMenu()
+  }, [])
 
   const Layout = getLayout()
   return (

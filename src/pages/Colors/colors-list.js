@@ -75,6 +75,10 @@ const ColorsList = props => {
             text: "Description",
         },
         {
+            dataField: "chance",
+            text: "Chance",
+        },
+        {
             dataField: "menu",
             isDummyField: true,
             editable: false,
@@ -108,6 +112,7 @@ const ColorsList = props => {
             _id: color._id,
             value: color.value,
             description: color.description,
+            chance: color.chance
         })
 
         setIsEdit(true)
@@ -140,12 +145,14 @@ const ColorsList = props => {
                 _id: values._id,
                 value: values.value,
                 description: values.description,
+                chance: values.chance
             }
             onUpdateColor(updateColor)
         } else {
             const newColor = {
                 value: values["value"],
                 description: values["description"],
+                chance: values["chance"]
             }
             onAddNewColor(newColor)
         }
