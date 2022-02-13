@@ -83,6 +83,10 @@ const Trait_typesList = props => {
             text: "Skin color",
         },
         {
+            dataField: "hasHairColor",
+            text: "Hair color",
+        },
+        {
             dataField: "menu",
             isDummyField: true,
             editable: false,
@@ -150,7 +154,8 @@ const Trait_typesList = props => {
                 name: values.name,
                 description: values.description,
                 index: values.index,
-                hasColor: values.hasColor
+                hasColor: values.hasColor,
+                hasHairColor: values.hasHairColor
             }
             onUpdateTrait_type(updateTrait_type)
         } else {
@@ -158,7 +163,8 @@ const Trait_typesList = props => {
                 name: values["name"],
                 description: values["description"],
                 index: values["index"],
-                hasColor: values["hasColor"]
+                hasColor: values["hasColor"],
+                hasHairColor: values["hasHairColor"]
             }
             onAddNewTrait_type(newTrait_type)
         }

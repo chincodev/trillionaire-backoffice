@@ -13,7 +13,8 @@ function Trait_typeForm(props) {
 		name: '',
 		description: '',
         index: '',
-        hasColor: ''
+        hasColor: '',
+        hasHairColor: ''
     });
 
     React.useEffect(() => {
@@ -32,12 +33,12 @@ function Trait_typeForm(props) {
             .max(100, 'Value must be less or equal than 100')
             .min(0, 'Value must be equal or greater than 0'),
         hasColor: Yup.boolean(),
+        hasHairColor: Yup.boolean(),
     
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
         setStatus();
-        console.log(fields);
         props.handleValidTrait_typeSubmit(null, fields)
     }
 
@@ -104,6 +105,13 @@ function Trait_typeForm(props) {
                         <Field type="checkbox" name="hasColor" id='hasColor' />&nbsp;
                         <label className="form-label ml-2 mb-0" for="hasColor"> Has skin colors</label>
                         <ErrorMessage name="hasColor" component="div" className="invalid-feedback" />
+                    </div>
+                </div>
+                <div className='col-12 mt-3'>
+                    <div className="form-group d-flex align-items-center">
+                        <Field type="checkbox" name="hasHairColor" id='hasHairColor' />&nbsp;
+                        <label className="form-label ml-2 mb-0" for="hasHairColor"> Has hair colors</label>
+                        <ErrorMessage name="hasHairColor" component="div" className="invalid-feedback" />
                     </div>
                 </div>
                 {/* <div className='col-12 mt-3'>

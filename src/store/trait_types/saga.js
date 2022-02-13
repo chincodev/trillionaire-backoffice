@@ -45,6 +45,7 @@ function* onUpdateTrait_type({ payload: trait_type }) {
                 name: trait_type.name, 
                 description: trait_type.description,
                 hasColor: trait_type.hasColor,
+                hasHairColor: trait_type.hasHairColor,
                 index: trait_type.index
             }
         })
@@ -70,6 +71,7 @@ function* onAddNewTrait_type({ payload: trait_type }) {
           name: trait_type.name,
           description: trait_type.description,
           hasColor: trait_type.hasColor,
+          hasHairColor: trait_type.hasHairColor,
           index: trait_type.index
         })
         yield put(addTrait_typeSuccess(Object.assign({}, trait_type, response)))
