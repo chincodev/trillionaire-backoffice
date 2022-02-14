@@ -33,7 +33,7 @@ const ModalAttributeImages = (props) => {
         if(!_.isEmpty(props.item)){
             setItem(props.item)
         }
-        if(!_.isEmpty(props.item) && props.item.trait_type.hasColor){
+        if(!_.isEmpty(props.item) && (props.item.trait_type.hasColor || props.item.trait_type.hasHairColor)){
             setItem(props.item)
             fetchColors()
         } else {
@@ -76,7 +76,7 @@ const ModalAttributeImages = (props) => {
                         <hr />
                         {console.log(item)}
                         {
-                            item.trait_type.hasColor ? (
+                            (item.trait_type.hasColor || item.trait_type.hasHairColor) ? (
                                 <>
                                     <h5>Images</h5>
                                     {
