@@ -46,7 +46,12 @@ export async function putImage(url, params, config = {}) {
   console.log(params);
   const formData = new FormData();
   formData.append("image", params.image);
-  formData.append("color", params.color);
+  if(params.color){
+    formData.append("color", params.color);
+  }
+  if(params.hair_color){
+    formData.append("hair_color", params.hair_color);
+  }
   return axiosApi
     .put(url, formData, { ...config })
     .then(response => response.data)
