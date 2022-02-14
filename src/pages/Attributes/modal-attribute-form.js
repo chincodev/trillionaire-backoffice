@@ -17,7 +17,7 @@ const ModalAttributeForm = (props) => {
             
         >
                 <ModalHeader toggle={props.toggle} tag="h4">
-                    {!!props.isEdit ? "Edit Attribute" : "Add Attribute"}
+                    {!!props.isEdit ? `Edit ${props.selectedAttributeName}` : `Add ${props.selectedAttributeName}`}
                 </ModalHeader>
                 <ModalBody>
                 {(!_.isEmpty(props.error) && props.showError) ? (
@@ -29,7 +29,8 @@ const ModalAttributeForm = (props) => {
                         attributeToEdit={props.attributeToEdit}
                         actionsLoading={props.actionsLoading}
                         setActionsLoading={props.setActionsLoading}
-                     
+                        selectedAttributeName={props.selectedAttributeName}
+                        selectedAttributeId={props.selectedAttributeId}
                     />
 
                     {/* <AvForm

@@ -273,6 +273,8 @@ const AttributesList = props => {
                 showError={showError}
                 actionsLoading={actionsLoading}
                 setActionsLoading={setActionsLoading}
+                selectedAttributeName={JSON.parse(sessionStorage.getItem('menu')).find(x => x._id === props.match.params._id).name}
+                selectedAttributeId={props.match.params._id}
             />
             
             <ModalAttributeImages 

@@ -38,18 +38,6 @@ function AttributeForm(props) {
         chance: Yup.number().required('chance is required')
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
-        trait_type: Yup.object(
-        //     {
-        //     name: Yup.string()
-        //         .required('name is required')
-        //         .max(100, 'The name cannot contain more than 100 characters'),
-        //     description: Yup.string()
-        //         .max(455, 'The description cannot contain more than 455 characters'),
-        //     index: Yup.number()
-        //         .max(100, 'Value must be less or equal than 100')
-        //         .min(0, 'Value must be equal or greater than 0'),
-        // }
-        ).required('Trait type is required'),
         forbidden_trait_types: Yup.array().of(
             Yup.object(
             //     {
@@ -68,9 +56,7 @@ function AttributeForm(props) {
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
         let sanitizedField = Object.assign({}, fields)
-        if(!_.isEmpty(sanitizedField.trait_type)){
-            sanitizedField.trait_type = sanitizedField.trait_type._id
-        }
+        sanitizedField.trait_type = props.selectedAttributeId
         if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
             sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
         }
@@ -85,22 +71,7 @@ function AttributeForm(props) {
         <Formik initialValues={initialValues} validationSchema={validationSchema} enableReinitialize={true} onSubmit={onSubmit}>
         {({ errors, touched, isSubmitting, setFieldTouched, handleChange, setFieldValue, values }) => (
             <Form className="signup-form">
-                <div className='col-12 mt-3'>
-                    <div className="form-group">
-						<SingleSelect
-							value={values.trait_type}
-							onChange={setFieldValue}
-							onBlur={setFieldTouched}
-							error={errors.trait_type}
-							endPoint={trait_typeService.find}
-							touched={touched.trait_type}
-							name={"trait_type"}
-							title={"Trait type"}
-							extraFilter={false}
-                            extraQuery={false}
-						/>
-                    </div>
-                </div>
+                
                 <div className='col-12 mt-3'>
                     <div className="form-group">
 						<SingleSelect
