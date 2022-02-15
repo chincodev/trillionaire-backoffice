@@ -86,7 +86,7 @@ const ModalAttributeImages = (props) => {
                         <Badge color='primary' style={{backgroundColor:'#556ee6'}}>{item.trait_type.name}</Badge>
                         <p>{item.description}</p>
                         {
-                            item.forbidden_trait_types && item.forbidden_trait_types.length > 0 && <span><strong>Forbidden traits:</strong> {item.forbidden_trait_types.map(x => x.name).join(', ')}</span>
+                            item.forbidden_attributes && item.forbidden_attributes.length > 0 && <span><strong>Forbidden traits:</strong> {item.forbidden_attributes.map(x => x.name).join(', ')}</span>
                         }<br />
                         <span><strong>Chance: </strong>{item.chance} / 9999</span>
                         <hr />

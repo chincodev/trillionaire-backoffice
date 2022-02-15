@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { SingleSelect } from 'components/Common/SingleSelect';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { currencyService, trait_typeService } from 'services';
+import { attributeService, currencyService, trait_typeService } from 'services';
 import _ from 'lodash';
 
 
@@ -16,7 +16,7 @@ function AttributeForm(props) {
         // image: '',
         chance: '',
         trait_type: '',
-        forbidden_trait_types: ''
+        forbidden_attributes: ''
     });
 
     React.useEffect(() => {
@@ -38,7 +38,7 @@ function AttributeForm(props) {
         chance: Yup.number().required('chance is required')
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
-        forbidden_trait_types: Yup.array().of(
+            forbidden_attributes: Yup.array().of(
             Yup.object(
             //     {
             //     name: Yup.string()
@@ -57,8 +57,8 @@ function AttributeForm(props) {
     function onSubmit(fields, { setStatus, setSubmitting }) {
         let sanitizedField = Object.assign({}, fields)
         sanitizedField.trait_type = props.selectedAttributeId
-        if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
-            sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
+        if(sanitizedField.forbidden_attributes && sanitizedField.forbidden_attributes.length > 0){
+            sanitizedField.forbidden_attributes = sanitizedField.forbidden_attributes.map(x => x._id)
         }
         setStatus();
         props.handleValidAttributeSubmit(null, sanitizedField)
@@ -66,26 +66,42 @@ function AttributeForm(props) {
 
     const [ avatarPreview, setAvatarPreview ] = useState(null)
 
+    const [ selectedCategory, setSelectedCategory ] = useState(null)
+
     return (
 
         <Formik initialValues={initialValues} validationSchema={validationSchema} enableReinitialize={true} onSubmit={onSubmit}>
         {({ errors, touched, isSubmitting, setFieldTouched, handleChange, setFieldValue, values }) => (
             <Form className="signup-form">
-                
                 <div className='col-12 mt-3'>
+                    <label className="form-label ml-2"> Forbidden attributes</label>
                     <div className="form-group">
+                        <select onChange={(e)=>setSelectedCategory(e.target.value)} className='form-control'>
+                            <option value={''}>Select category</option>
+                            {
+                                JSON.parse(sessionStorage.getItem('menu')).map(x => <option value={x._id}>{x.name}</option>)
+                            }
+                        </select>
+                  
+                    <br/>
+                {/* </div>
+                <div className='col-12 mt-3'> */}
+                    
 						<SingleSelect
-							value={values.forbidden_trait_types}
+							value={values.forbidden_attributes}
 							onChange={setFieldValue}
                             isMulti={true}
 							onBlur={setFieldTouched}
-							error={errors.forbidden_trait_types}
-							endPoint={trait_typeService.find}
-							touched={touched.forbidden_trait_types}
-							name={"forbidden_trait_types"}
-							title={"forbidden trait types"}
+							error={errors.forbidden_attributes}
+							endPoint={attributeService.find}
+							touched={touched.forbidden_attributes}
+							name={"forbidden_attributes"}
+							// title={"Forbidden attributes"}
+                            searchField={"value"}
+                            sortField={'value'}
 							extraFilter={false}
-                            extraQuery={false}
+                            extraQuery={selectedCategory ? `&filter_field[]=trait_type&filter_type[]=eq&filter_value[]=${selectedCategory}` : null}
+                            placeholder={'Search attributes'}
 						/>
                     </div>
                 </div>   

@@ -27,10 +27,10 @@ class SingleSelect extends React.Component {
 		  return callback([]);
 		}
 
-		var endPointQuery=`?page=0&size=50&search=${inputValue}&sort_Field=name&sort_order=asc`
+		var endPointQuery=`?page=1&size=50&search_value=${inputValue}&search_fields[]=${this.props.searchField}&sort_field=${this.props.sortField ? this.props.sortField : 'name'}&sort_order=asc`
 
 		if(this.props.extraQuery){
-			endPointQuery += `&filter_field[]=state&filter_type[]=eq&filter_value[]=${this.props.extraQuery._id}`;
+			endPointQuery += this.props.extraQuery;
 		}
 
 		if(this.props.extraFilter){
@@ -38,7 +38,7 @@ class SingleSelect extends React.Component {
 		}
 
 		this.props.endPoint(endPointQuery,inputValue).then(data => {
-			const results = data.totalData;
+			const results = data.data;
 			callback(this.mapOptionsToValues(results));
 		 
 		});
@@ -52,7 +52,7 @@ class SingleSelect extends React.Component {
 			{this.props.title?<label htmlFor="color">{this.props.title}</label>:""}
 		    <AsyncSelect
 				isMulti={this.props.isMulti}
-		    	getOptionLabel={values => values.name}
+		    	getOptionLabel={values => this.props.searchField ? values[this.props.searchField] : values.name}
 		    	getOptionValue={values => this.props.slugOptionValue ? values.slug : values._id }
 		    	cacheOptions={(this.props.extraQuery)?false:true}
 		    	value={this.props.value}
@@ -61,6 +61,7 @@ class SingleSelect extends React.Component {
 		    	onBlur={this.handleBlur}
 		    	placeholder={this.props.placeholder}
 		    	onChange={this.handleChange}
+				placeholder={this.props.placeholder ? this.props.placeholder : 'Select...'}
 		    />
 			{this.props.smallMessage && (
 			        <div style={{ marginTop: '.5rem' }}>{this.props.smallMessage}</div>
