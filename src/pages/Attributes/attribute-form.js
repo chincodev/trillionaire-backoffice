@@ -49,12 +49,12 @@ function AttributeForm(props) {
         if(sanitizedField.forbidden_attributes && sanitizedField.forbidden_attributes.length > 0){
             sanitizedField.forbidden_attributes = sanitizedField.forbidden_attributes.map(x => x._id)
         } else {
-            delete sanitizedField.forbidden_attributes
+            sanitizedField.forbidden_attributes = []
         }
         if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
             sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
         } else {
-            delete sanitizedField.forbidden_trait_types
+            sanitizedField.forbidden_trait_types = []
         }
         setStatus();
         props.handleValidAttributeSubmit(null, sanitizedField)
