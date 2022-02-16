@@ -38,7 +38,7 @@ function AttributeForm(props) {
         chance: Yup.number().required('chance is required')
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
-            forbidden_attributes: Yup.array().of(
+        forbidden_attributes: Yup.array().of(
             Yup.object(
             //     {
             //     name: Yup.string()
@@ -51,7 +51,7 @@ function AttributeForm(props) {
             //         .min(0, 'Value must be equal or greater than 0'),
             // }
             ),
-        )
+        ).nullable()
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -59,6 +59,8 @@ function AttributeForm(props) {
         sanitizedField.trait_type = props.selectedAttributeId
         if(sanitizedField.forbidden_attributes && sanitizedField.forbidden_attributes.length > 0){
             sanitizedField.forbidden_attributes = sanitizedField.forbidden_attributes.map(x => x._id)
+        } else {
+            delete sanitizedField.forbidden_attributes
         }
         setStatus();
         props.handleValidAttributeSubmit(null, sanitizedField)

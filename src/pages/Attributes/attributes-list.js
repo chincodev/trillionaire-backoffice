@@ -99,7 +99,7 @@ const AttributesList = props => {
             dataField: "forbidden_attributes",
             formatter: (cellContent, value) => (
                 <>
-                    {cellContent && cellContent.length > 0 && cellContent.map(x => x.name).join(', ')}
+                    {cellContent && cellContent.length > 0 && cellContent.length}
                 </>
             ),
         },
