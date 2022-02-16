@@ -104,6 +104,15 @@ const AttributesList = props => {
             ),
         },
         {
+            text: "Forbidden trait types",
+            dataField: "forbidden_trait_types",
+            formatter: (cellContent, value) => (
+                <>
+                    {cellContent && cellContent.length > 0 && cellContent.map(x => x.name).join(', ')}
+                </>
+            ),
+        },
+        {
             text: "Images",
             dataField: "images",
             formatter: (cellContent, value) => (
@@ -152,7 +161,9 @@ const AttributesList = props => {
             // image: attribute.image,
             chance: attribute.chance,
             trait_type: attribute.trait_type, 
-            forbidden_attributes: attribute.forbidden_attributes
+            forbidden_attributes: attribute.forbidden_attributes,
+            forbidden_trait_types: attribute.forbidden_trait_types
+            
         })
 
         setIsEdit(true)
@@ -200,7 +211,8 @@ const AttributesList = props => {
                 // image: values.image,
                 chance: values.chance,
                 trait_type: values.trait_type, 
-                forbidden_attributes: values.forbidden_attributes
+                forbidden_attributes: values.forbidden_attributes,
+                forbidden_trait_types: values.forbidden_trait_types
             }
             onUpdateAttribute(updateAttribute)
         } else {
@@ -210,7 +222,8 @@ const AttributesList = props => {
                 // image: values.image,
                 chance: values.chance,
                 trait_type: values.trait_type, 
-                forbidden_attributes: values.forbidden_attributes
+                forbidden_attributes: values.forbidden_attributes,
+                forbidden_trait_types: values.forbidden_trait_types
             }
             onAddNewAttribute(newAttribute)
         }

@@ -47,7 +47,8 @@ function* onUpdateAttribute({ payload: attribute }) {
                 chance: attribute.chance,
                 image: attribute.image,
                 trait_type: attribute.trait_type,
-                forbidden_attributes: attribute.forbidden_attributes
+                forbidden_attributes: attribute.forbidden_attributes,
+                forbidden_trait_types: attribute.forbidden_trait_types
             }
         })
         yield put(updateAttributeSuccess(attribute))
@@ -74,7 +75,8 @@ function* onAddNewAttribute({ payload: attribute }) {
           chance: attribute.chance,
         //   image: attribute.image,
           trait_type: attribute.trait_type,
-          forbidden_attributes: attribute.forbidden_attributes
+          forbidden_attributes: attribute.forbidden_attributes,
+          forbidden_trait_types: attribute.forbidden_trait_types
         })
         yield put(addAttributeSuccess(Object.assign({}, attribute, response)))
         yield put(addAttributeFail(null))

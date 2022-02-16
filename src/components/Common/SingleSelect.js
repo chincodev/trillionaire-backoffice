@@ -38,7 +38,7 @@ class SingleSelect extends React.Component {
 		}
 
 		this.props.endPoint(endPointQuery,inputValue).then(data => {
-			const results = data.data;
+			const results = data.data && data.data.length > 0 ? data.data : data.totalData;
 			callback(this.mapOptionsToValues(results));
 		 
 		});

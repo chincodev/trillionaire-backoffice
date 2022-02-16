@@ -16,6 +16,7 @@ function AttributeForm(props) {
         // image: '',
         chance: '',
         trait_type: '',
+        forbidden_attributes: '',
         forbidden_attributes: ''
     });
 
@@ -38,20 +39,8 @@ function AttributeForm(props) {
         chance: Yup.number().required('chance is required')
             .max(9999, 'index must be less or equal than 9999')
             .min(0, 'index must be equal or greater than 0'),
-        forbidden_attributes: Yup.array().of(
-            Yup.object(
-            //     {
-            //     name: Yup.string()
-            //         .required('name is required')
-            //         .max(100, 'The name cannot contain more than 100 characters'),
-            //     description: Yup.string()
-            //         .max(455, 'The description cannot contain more than 455 characters'),
-            //     index: Yup.number()
-            //         .max(100, 'Value must be less or equal than 100')
-            //         .min(0, 'Value must be equal or greater than 0'),
-            // }
-            ),
-        ).nullable()
+        forbidden_attributes: Yup.array().of(Yup.object()).nullable(),
+        forbidden_trait_types: Yup.array().of(Yup.object()).nullable()
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -61,6 +50,11 @@ function AttributeForm(props) {
             sanitizedField.forbidden_attributes = sanitizedField.forbidden_attributes.map(x => x._id)
         } else {
             delete sanitizedField.forbidden_attributes
+        }
+        if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
+            sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
+        } else {
+            delete sanitizedField.forbidden_trait_types
         }
         setStatus();
         props.handleValidAttributeSubmit(null, sanitizedField)
@@ -106,7 +100,28 @@ function AttributeForm(props) {
                             placeholder={'Search attributes'}
 						/>
                     </div>
-                </div>   
+                </div>  
+                <div className='col-12 mt-3'>
+                    <div className="form-group">
+                        <label className="form-label ml-2" for="forbidden_trait_types"> Forbidden trait types</label>
+                        <SingleSelect
+							value={values.forbidden_trait_types}
+							onChange={setFieldValue}
+                            isMulti={true}
+							onBlur={setFieldTouched}
+							error={errors.forbidden_trait_types}
+							endPoint={trait_typeService.find}
+							touched={touched.forbidden_trait_types}
+							name={"forbidden_trait_types"}
+							// title={"Forbidden attributes"}
+                            searchField={"name"}
+                            sortField={'name'}
+							extraFilter={false}
+                            extraQuery={null}
+                            placeholder={'Search trait types'}
+						/>
+                    </div>
+                </div> 
                 <div className='col-12 mt-3'>
                     <div className="form-group">
                         <label className="form-label ml-2" for="value"> Value</label>
