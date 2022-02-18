@@ -38,6 +38,7 @@
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
+    "merge-images": "^2.0.0",
     "metismenujs": "^1.2.1",
     "mkdirp": "^1.0.4",
     "moment": "2.29.1",
