@@ -422,7 +422,7 @@ const Dashboard = props => {
               type="button"
               color="dark"
               onClick={() => {
-                generate()
+                autogenerate()
               }}
             >
               {
