@@ -7,6 +7,7 @@ import placeholderImage from "../../assets/images/placeholder.jpg"
 import { SingleSelect } from "components/Common/SingleSelect"
 import { Form, Formik } from "formik"
 import * as Yup from 'yup';
+import Swal from "sweetalert2"
 
 const ModalAttributeImage = (props) => {
 
@@ -30,7 +31,7 @@ const ModalAttributeImage = (props) => {
         
         setItem(props.item);
         (!_.isEmpty(props.scopedHairColor)) ? (
-            item.images.map(x => {
+            props.item.images.map(x => {
                 if(x.hair_color === props.scopedHairColor._id){
                     setInitialValues({
                         forbidden_attributes: x.forbidden_attributes || '',
@@ -40,7 +41,7 @@ const ModalAttributeImage = (props) => {
             })
             
         ) : (!_.isEmpty(props.scopedColor)) ? (
-            item.images.map(x => {
+            props.item.images.map(x => {
                 if(x.color === props.scopedColor._id){
                    
                     setInitialValues({
@@ -51,8 +52,8 @@ const ModalAttributeImage = (props) => {
             })
         ) : (
             setInitialValues({
-                forbidden_attributes: item.images && item.images.length > 0 ? item.images[0]['forbidden_attributes'] : '',
-                forbidden_trait_types: item.images && item.images.length > 0 ? item.images[0]['forbidden_trait_types'] : ''
+                forbidden_attributes: props.item.images && props.item.images.length > 0 ? props.item.images[0]['forbidden_attributes'] : '',
+                forbidden_trait_types: props.item.images && props.item.images.length > 0 ? props.item.images[0]['forbidden_trait_types'] : ''
             })
         );
     }, [props.item, props.scopedHairColor, props.scopedColor])
@@ -70,27 +71,29 @@ const ModalAttributeImage = (props) => {
 
 
     async function onSubmit(fields, { setStatus, setSubmitting }) {
+        console.log(item)
         setSubmitting(true)
+        let completeData = Object.assign({}, fields)
         let sanitizedField = Object.assign({}, fields)
-        if(sanitizedField.forbidden_attributes && sanitizedField.forbidden_attributes.length > 0){
-            sanitizedField.forbidden_attributes = sanitizedField.forbidden_attributes.map(x => x._id)
-        } else {
-            sanitizedField.forbidden_attributes = []
-        }
-        if(sanitizedField.forbidden_trait_types && sanitizedField.forbidden_trait_types.length > 0){
-            sanitizedField.forbidden_trait_types = sanitizedField.forbidden_trait_types.map(x => x._id)
-        } else {
-            sanitizedField.forbidden_trait_types = []
-        }
+        
         
 
         let newItem
+        let newCompleteData
 
         (!_.isEmpty(props.scopedHairColor)) ? (
             newItem = {
                 images: item.images.map(x => {
                     if(x.hair_color === props.scopedHairColor._id){
                         x = {...x, ...sanitizedField}
+                    }
+                    return x
+                })
+            },
+            newCompleteData = {
+                images: item.images.map(x => {
+                    if(x.hair_color === props.scopedHairColor._id){
+                        x = {...x, ...completeData}
                     }
                     return x
                 })
@@ -103,20 +106,59 @@ const ModalAttributeImage = (props) => {
                     }
                     return x
                 })
+            },
+            newCompleteData = {
+                images: item.images.map(x => {
+                    if(x.color === props.scopedColor._id){
+                        x = {...x, ...completeData}
+                    }
+                    return x
+                })
             }
         ) : (
             newItem = {
                 images: [
-                    {...item.images[0], ...sanitizedField}
+                    {...item.images[0], ...completeData}
                 ]
             }
         );
 
+        if(newItem.images && newItem.images.length > 0){
+            newItem.images = newItem.images.map(x => {
+                if(x.forbidden_attributes && x.forbidden_attributes.length > 0){
+                    x.forbidden_attributes = x.forbidden_attributes.map(x => x._id)
+                } else {
+                    x.forbidden_attributes = []
+                }
+                if(x.forbidden_trait_types && x.forbidden_trait_types.length > 0){
+                    x.forbidden_trait_types = x.forbidden_trait_types.map(x => x._id)
+                } else {
+                    x.forbidden_trait_types = []
+                }
+                return x
+            })
+        }
+        
+
         try {
             await attributeService.update({_id: item._id, params: newItem})
+            Swal.fire(
+                'Done',
+                'Attribute updated',
+                'success'
+            )
+            
             setStatus();
+            props.getData()
             setSubmitting(false)
+            props.toggle()
         } catch (er){
+            Swal.fire(
+                'Ooops',
+                'Something went wrong',
+                'error'
+            )
+            props.toggle()
             console.log(er)
         }
         
@@ -132,11 +174,10 @@ const ModalAttributeImage = (props) => {
             toggle={props.toggle}
             
         >
-            {console.log(initialValues)}
+            {console.log(props)}
             {
                 actionsLoading ? 'Loading...' : <>
                     <ModalHeader toggle={props.toggle} tag="h4">
-                        {console.log(props)}
                         {item.value}: {props.scopedColor ? props.scopedColor.value : props.scopedHairColor ? props.scopedHairColor.value : 'Default'}
                     </ModalHeader>
                     <ModalBody>

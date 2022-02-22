@@ -42,10 +42,10 @@ const AttributeProfile = props => {
     const history = useHistory()
     
 
-    const getData = async (id) => {
+    const getData = async () => {
         try {
             setActionsLoading(true)
-            const _item = await attributeService.find(id)
+            const _item = await attributeService.find(props.match.params.attribute_id)
             setItem(_item)
             const _colors = await colorService.list()
             setColors(_colors.totalData)
@@ -60,7 +60,7 @@ const AttributeProfile = props => {
     }
 
     useEffect(() => {
-        getData(props.match.params.attribute_id)
+        getData()
     }, []);
 
     return (
@@ -77,15 +77,21 @@ const AttributeProfile = props => {
                         ) : (
                             <>
                                 <Breadcrumbs title={'ATTRIBUTES'} subtitle={item.trait_type.name} breadcrumbItem={item.value} />
-                                <ModalAttributeImage
-                                    isOpen={imagesModalIsOpen}
-                                    toggle={()=>setImagesModalIsOpen(false)}
-                                    actionsLoading={actionsLoading}
-                                    setActionsLoading={setActionsLoading}
-                                    item={item}
-                                    scopedHairColor={scopedHairColor}
-                                    scopedColor={scopedColor}
-                                />
+                                {console.log(item)}
+                                {
+                                    imagesModalIsOpen && <ModalAttributeImage
+                                        isOpen={imagesModalIsOpen}
+                                        toggle={()=>setImagesModalIsOpen(false)}
+                                        actionsLoading={actionsLoading}
+                                        setActionsLoading={setActionsLoading}
+                                        item={item}
+                                        setItem={setItem}
+                                        getData={getData}
+                                        scopedHairColor={scopedHairColor}
+                                        scopedColor={scopedColor}
+                                    />
+                                }
+                                
                                 <br/>
                                 <Row>
                                     <Col lg="12">
