@@ -128,7 +128,8 @@ const AttributesList = props => {
             text: "Action",
             formatter: (cellContent, attribute) => (
                 <div className="d-flex gap-3">
-                    <Link className="text-primary" to="#"><i className="mdi mdi-eye font-size-18" id="imagetooltip" onClick={() => openImagesModal(attribute)}></i></Link>
+                    {/* <Link className="text-primary" to="#"><i className="mdi mdi-eye font-size-18" id="imagetooltip" onClick={() => openImagesModal(attribute)}></i></Link> */}
+                    <Link className="text-primary" to={`/attributes/${props.match.params._id}/${attribute._id}`}><i className="mdi mdi-eye font-size-18" id="imagetooltip"></i></Link>
                     <Link className="text-success" to="#"><i className="mdi mdi-pencil font-size-18" id="edittooltip" onClick={() => handleAttributeClick(attribute)}></i></Link>
                     <Link className="text-danger" to="#"><i className="mdi mdi-delete font-size-18" id="deletetooltip" onClick={() => openDeleteDialog(attribute)}></i></Link>
                 </div>

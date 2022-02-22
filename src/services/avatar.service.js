@@ -6,6 +6,10 @@ const find = (id) => get('avatars/'+id)
 
 const create = (params) => post('avatars', params)
 
+const generateOne = (params) => post('avatars/generateOne', params)
+
+const saveGenerated = (params) => post('avatars/saveGenerated', params)
+
 const updateImage = ({_id, params}) => putImage(`avatars/putImage/${_id}`, params)
 
 const update = ({_id, params}) => put(`avatars/${_id}`, params)
@@ -17,6 +21,8 @@ export const avatarService = {
     find,
     create,
     updateImage,
+    saveGenerated,
     update,
+    generateOne,
 	delete: _delete,
 };

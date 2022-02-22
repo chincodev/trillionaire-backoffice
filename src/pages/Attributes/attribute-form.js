@@ -78,11 +78,7 @@ function AttributeForm(props) {
                                 JSON.parse(sessionStorage.getItem('menu')).map(x => <option value={x._id}>{x.name}</option>)
                             }
                         </select>
-                  
-                    <br/>
-                {/* </div>
-                <div className='col-12 mt-3'> */}
-                    
+                        <br/>
 						<SingleSelect
 							value={values.forbidden_attributes}
 							onChange={setFieldValue}

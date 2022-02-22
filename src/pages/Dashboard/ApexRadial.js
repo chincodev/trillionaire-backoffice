@@ -46,7 +46,7 @@ class ApexRadial extends Component {
         },
         labels: ["of 9999"],
       },
-      series: [67],
+      series: [(this.props.number * 100 / this.props.total).toFixed(1)],
     }
   }
 

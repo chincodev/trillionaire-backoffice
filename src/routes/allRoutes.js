@@ -13,12 +13,14 @@ import colorsList from "../pages/Colors/colors-list"
 import attributesList from "pages/Attributes/attributes-list"
 import trait_typesList from "pages/Trait_types/trait_types-list"
 import hair_coolorsList from "pages/Hair_coolors/hair_coolors-list"
+import attributesProfile from "pages/Attributes/attributes-profile"
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/colors", component: colorsList },
   { path: "/trait_types", component: trait_typesList },
   { path: "/attributes/:_id", component: attributesList },
+  { path: "/attributes/:_id/:attribute_id", component: attributesProfile },
   { path: "/hair_coolors", component: hair_coolorsList },
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]

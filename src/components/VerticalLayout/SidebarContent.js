@@ -19,15 +19,14 @@ const SidebarContent = props => {
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
     const pathName = props.location.pathname
-    console.log(pathName)
+   
     const initMenu = () => {
       new MetisMenu("#side-menu")
       let matchingMenuItem = null
       const ul = document.getElementById("side-menu")
       const items = ul.getElementsByClassName("link")
       for (let i = 0; i < items.length; ++i) {
-        console.log(pathName)
-        console.log(items[i].pathname)
+
         if (pathName === items[i].pathname) {
           matchingMenuItem = items[i]
           break
