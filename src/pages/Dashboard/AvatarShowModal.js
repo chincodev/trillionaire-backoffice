@@ -9,7 +9,7 @@ const AvatarShowModal = (props) => {
 	const [ item, setItem ] = useState({})
 	const [ scopedId, setScopedId ] = useState(1)
 	const [ actionsLoading, setActionsLoading ] = useState(false)
-	const [ debouncedScopedId ] = useDebounce(scopedId, 1000);
+	// const [ debouncedScopedId ] = useDebounce(scopedId, 1000);
 
 	const getItem = async (id) => {
 
@@ -27,8 +27,8 @@ const AvatarShowModal = (props) => {
 	}
 
 	useEffect(() => {
-		getItem(debouncedScopedId)
-	}, [debouncedScopedId])
+		getItem(scopedId)
+	}, [scopedId])
 
 
     return (
@@ -49,7 +49,7 @@ const AvatarShowModal = (props) => {
                         props.setAvatarShowModal(!props.avatarShowModal)
                     }}
                 >
-                    Avatar's List
+                    Avatar's List: {!_.isEmpty(item) && item.data ? item.data.name : ''}
                 </ModalHeader>
 
                 <ModalBody>
@@ -90,7 +90,7 @@ const AvatarShowModal = (props) => {
                   color="primary"
 				  disabled={actionsLoading ? true : item.prev.length > 0 ? false : true}
                   onClick={() => {
-                    getItem(item.prev[0]['id'])
+                    setScopedId(item.prev[0]['id'])
                   }}
                 >
                   Back
@@ -100,7 +100,7 @@ const AvatarShowModal = (props) => {
 						type="button"
 						color="primary"
 						onClick={() => {
-						  getItem(x.id)
+						  setScopedId(x.id)
 						}}
 						disabled={actionsLoading}
 					  >
@@ -114,14 +114,14 @@ const AvatarShowModal = (props) => {
                 >
                   {item.data.id}
                 </Button> */}
-				<input style={{width:'100px'}} type='number' disabled={actionsLoading} value={scopedId} onChange={(e)=>setScopedId(e.target.value)} className='form-control' min='0'></input>
+				<input style={{width:'100px'}} type='number'  value={scopedId} onChange={(e)=>setScopedId(e.target.value)} className='form-control' min='0'></input>
 				{
 					item.next.map(x => <Button
 						type="button"
 						color="primary"
 						disabled={actionsLoading}
 						onClick={() => {
-						  getItem(x.id)
+						  setScopedId(x.id)
 						}}
 					  >
 						{x.id}
@@ -132,7 +132,7 @@ const AvatarShowModal = (props) => {
                   type="button"
                   color="primary"
                   onClick={() => {
-                    getItem(item.next[0]['id'])
+                    setScopedId(item.next[0]['id'])
                   }}
                 >
                   Next
