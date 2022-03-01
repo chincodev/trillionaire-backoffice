@@ -279,7 +279,7 @@ const ModalAttributeImage = (props) => {
                             ) : (!_.isEmpty(props.scopedColor)) ? (
                                 item.images && item.images.find(x => x.color ===  props.scopedColor._id) ? item.images.find(x => x.color ===  props.scopedColor._id).url : placeholderImage
                             ) : (
-                                item.images ? item.images[0].url : placeholderImage
+                                item.images && item.images.length > 0 ? item.images[0].url : placeholderImage
                             )
                                 
                         }></img>
