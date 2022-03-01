@@ -4,6 +4,7 @@ import MetaTags from 'react-meta-tags';
 import { connect } from "react-redux"
 import { withRouter, Link, useHistory } from "react-router-dom"
 import { Card, CardBody, Col, Container, Row, Modal, Button, ModalHeader, ModalBody, Alert, Badge } from "reactstrap"
+import placeholderImage from "../../assets/images/placeholder.jpg"
 import
 paginationFactory, {
     PaginationListStandalone,
